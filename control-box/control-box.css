@@ -1,0 +1,14 @@
+.ControlBox {
+    
+}
+.ControlBoxButtons {
+    text-align: right;
+}
+.ControlSuccess {
+    background-color: #67c767 !important;
+    border: 1px solid green !important;
+}
+.ControlPending {
+    background-color: #66c0d0 !important;
+    border: 1px solid blue !important;
+}

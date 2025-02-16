@@ -1,0 +1,14 @@
+{
+  "name": "lsw-form-controls",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lsw-form-controls.js",
+  "scripts": {
+    "build": "node bundler.js",
+    "test": "echo 'no test for lsw-form-controls'",
+    "versionate": "echo 'no versionate for lsw-form-controls'"
+  },
+  "keywords": [],
+  "author": "allnulled",
+  "license": "WTFPL"
+}

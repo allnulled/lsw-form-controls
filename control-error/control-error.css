@@ -1,0 +1,45 @@
+.ControlSuccess,
+.ControlPending,
+.ControlError {
+    max-height: 60px;
+    overflow: scroll;
+    border: 1px solid red;
+    border-radius: 2pt;
+    margin-top: 4px;
+    padding: 4px;
+    background-color: #ce4444;
+    color: black;
+    position: relative;
+}
+.ControlSuccess.unsized,
+.ControlPending.unsized,
+.ControlError.unsized {
+    max-height: 200px;
+}
+.ControlError .errorName {
+    
+}
+.ControlError .errorMessage {
+
+}
+.ControlError .errorStack {
+    display: none;
+}
+
+.ControlError pre {
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial;
+    white-space: pre-wrap;
+}
+.ControlError .clearErrorButton {
+    margin-right: 4px;
+    padding: 0px;
+    cursor: pointer;
+    float: right;
+    position: absolute;
+    top: 4px;
+    right: 0px;
+    bottom: auto;
+    left: auto;
+}

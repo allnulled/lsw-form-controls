@@ -1,0 +1,80 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BasicControl
+    props:
+        initial-value:*
+        on-change:Fn
+    data: 
+        value
+    slots:
+        pre-label
+        post-label
+
+StringControl (like BasicControl)
+    +props:
+        validator:Fn
+        on-enter:Fn
+        is-multiline:Boolean
+
+BooleanControl (like BasicControl)
+
+IntegerControl (like BasicControl)
+
+NumberControl (like BasicControl)
+
+NumberRangeControl (like BasicControl)
+
+TimeControl (like BasicControl)
+    +props:
+        only-mode:String ("day","time","daytime")
+        marked-days:Array<Array<Year,Month,Day>>
+        selectable-ranges:Array<Object(={from:Date,to:Date})>
+
+OptionsControl (like BasicControl)
+    +props:
+        view-as:String ("checkbox","combobox","selector")
+        only-mode:String ("adapted", "list", "item")
+        options:Array<Object{text=value,value,default=false}>
+
+SchemableControl (like BasicControl)
+    +props:
+        type:String
+        args:Object
+
+SchemedControl (like BasicControl)
+    +props:
+        schema:Array
+        args:Object
+
+<control-handler :on-submit="wherever">
+    <control-group :name="'privateInfo'">
+        <schemed-control :schema="{name:'string',age:'integer',birth:'date'}" :control-name="'user'" />
+        <schemed-control :schema="{name:'string',postalCode:'string/postalCode',demarcation:'string'}" :control-name="'city'" />
+    </control-group>
+    <control-group :name="'publicInfo'">
+        <schemed-control :schema="{proposal:'string'}" />
+    </control-group>
+</control-handler>
+
+ControlGroup
+ControlForm
+ControlHandler

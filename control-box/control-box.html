@@ -1,0 +1,25 @@
+<div class="ControlBox FormControl">
+  <!--Content of the form-->
+  <slot></slot>
+  <!--Buttons of the form-->
+  <div class="ControlBoxButtons" v-if="validateButton || submitButton">
+    <span v-if="validateButton">
+        <button v-on:click="validate">Validate</button>
+    </span>
+    <span v-if="submitButton">
+        <button v-on:click="submit">Submit</button>
+    </span>
+  </div>
+  <!--Error of the form-->
+  <ControlError class="unsized" v-if="error" :error="error" :control="this" style="margin-bottom: 4px;" />
+  <div class="ControlSuccess" v-else-if="showValidatedMessage && (state === 'validated')">
+    ☑️ All fields are valid.
+  </div>
+  <div class="ControlSuccess" v-else-if="showSubmittedMessage && (state === 'submitted')">
+    ☑️ Data was successfully submitted.
+  </div>
+  <div class="ControlPending" v-else-if="state === 'pending'">
+    🕒 One moment, please... 🕒
+  </div>
+  <!--End of the form-->
+</div>
