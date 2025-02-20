@@ -70,6 +70,14 @@
       name: {
         type: String,
         default: () => undefined
+      },
+      cssStyles: {
+        type: Object,
+        default: () => ({})
+      },
+      cssClasses: {
+        type: Object,
+        default: () => ({})
       }
     },
     data() {

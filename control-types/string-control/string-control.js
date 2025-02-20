@@ -9,7 +9,7 @@ Vue.component("StringControl", {
     multiline: {
       type: Boolean,
       default: () => false,
-    }
+    },
   },
   data() {
     return {}
