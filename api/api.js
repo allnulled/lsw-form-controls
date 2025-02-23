@@ -116,6 +116,7 @@
             this.setError(result);
           } else {
             // @OK
+            this.clearError();
           }
           return result;
         } catch (error) {

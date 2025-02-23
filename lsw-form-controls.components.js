@@ -297,7 +297,7 @@ Vue.component("NumberControl", {
 Vue.component("StringControl", {
   template: `<div class="StringControl FormControl ControlType">
     <div class="FormLabel" v-if="label">{{ label }}</div>
-    <input v-if="!multiline" class="FormInput" type="text" v-model="value" :placeholder="placeholder" />
+    <input v-if="!multiline" class="FormInput" :class="cssClasses.input || {}" :style="cssStyles.input || {}" type="text" v-model="value" :placeholder="placeholder" />
     <textarea v-else class="FormInput" :class="cssClasses.textarea || {}" :style="cssStyles.textarea || {}" v-model="value" :placeholder="placeholder" />
     <ControlError v-if="error" :error="error" :control="this" />
 </div>`,
@@ -317,6 +317,43 @@ Vue.component("StringControl", {
   },
   methods: {
     
+  },
+  watch: {
+    
+  },
+  mounted() {
+    
+  }
+});
+Vue.component("DateControl", {
+  template: `<div class="DateControl FormControl ControlType">
+    <div class="FormLabel" v-if="label">{{ label }}</div>
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <input type="text" placeholder="2025/01/05" v-model="dia" />
+        </div>
+        <div>
+            <input type="text" placeholder="10:35" v-model="hora" />
+        </div>
+    </div>
+    <ControlError v-if="error" :error="error" :control="this" />
+</div>`,
+  mixins: [LswFormControls.mixins.get("BasicControl")],
+  props: {
+    
+  },
+  data() {
+    return {
+      dia: "",
+      hora: "",
+    }
+  },
+  methods: {
+    getValue() {
+      const dateString = this.dia + " " + this.hora;
+      const date = new Date(dateString);
+      return { text: dateString, date };
+    }
   },
   watch: {
     
