@@ -5,77 +5,20 @@
   @version:   1.0.0
 */
 .ControlBox {
-    
-}
-.ControlBoxButtons {
-    text-align: right;
-}
-.ControlSuccess {
-    background-color: #67c767 !important;
-    border: 1px solid green !important;
-}
-.ControlPending {
-    background-color: #66c0d0 !important;
-    border: 1px solid blue !important;
-}
-.ControlSuccess,
-.ControlPending,
-.ControlError {
-    max-height: 60px;
-    overflow: scroll;
-    border: 1px solid red;
-    border-radius: 2pt;
-    margin-top: 4px;
     padding: 4px;
-    background-color: #ce4444;
-    color: black;
-    position: relative;
+    padding-bottom: 0px;
 }
-.ControlSuccess.unsized,
-.ControlPending.unsized,
-.ControlError.unsized {
-    max-height: 200px;
+.FormControl.ControlType {
+    border: 1px solid #999;
+    border-radius: 2pt;
+    padding: 4px;
+    margin-bottom: 4px;
 }
-.ControlError .errorName {
-    
+.FormControl.ControlType textarea,
+.FormControl.ControlType input[type='text'] {
+    width: 100%;
 }
-.ControlError .errorMessage {
-
-}
-.ControlError .errorStack {
-    display: none;
-}
-
-.ControlError pre {
-    padding: 0px;
-    margin: 0px;
-    font-family: Arial;
-    white-space: pre-wrap;
-}
-.ControlError .clearErrorButton {
-    margin-right: 4px;
-    padding: 0px;
-    cursor: pointer;
-    float: right;
-    position: absolute;
-    top: 4px;
-    right: 0px;
-    bottom: auto;
-    left: auto;
-}
-.ArrayControl {
-    
-}
-.BooleanControl {
-    
-}
-.NumberControl {
-    
-}
-.StringControl {
-    
-}
-.DateControl {
-    
+.FormControl.ControlType textarea {
+    resize: vertical;
 }
 

@@ -7,7 +7,6 @@
     border-radius: 2pt;
     padding: 4px;
     margin-bottom: 4px;
-    background-color: #C0C0C0;
 }
 .FormControl.ControlType textarea,
 .FormControl.ControlType input[type='text'] {

@@ -4,6 +4,212 @@
   @name:      @allnulled/lsw-form-controls
   @version:   1.0.0
 */
+(function (factory) {
+  const mod = factory();
+  if (typeof window !== 'undefined') {
+    window['LswFormControls'] = mod;
+  }
+  if (typeof global !== 'undefined') {
+    global['LswFormControls'] = mod;
+  }
+  if (typeof module !== 'undefined') {
+    module.exports = mod;
+  }
+})(function () {
+
+  class LswFormControlsClass {
+
+    static class = this;
+
+    constructor() {
+      this.mixins = new Map();
+    }
+
+    registerMixin(name, mixin) {
+      if(this.mixins.has(name)) {
+        throw new Error(`Cannot register mixin because it is already registered «${name}» on «LswFormControls.registerMixin»`);
+      }
+      this.mixins.set(name, mixin);
+    }
+
+    unregisterMixin(name) {
+      if(this.mixins.has(name)) {
+        throw new Error(`Cannot unregister mixin because it is not registered «${name}» on «LswFormControls.unregisterMixin»`);
+      }
+      this.mixins.delete(name);
+    }
+
+  }
+
+  const LswFormControls = new LswFormControlsClass();
+
+  LswFormControls.registerMixin("BasicControl", {
+    props: {
+      initialValue: {
+        type: [String,Object,Array,Boolean,Number,undefined],
+        default: () => undefined
+      },
+      onValidate: {
+        type: Function,
+        default: () => true
+      },
+      onChange: {
+        type: Function,
+        default: () => undefined
+      },
+      onDelayedChange: {
+        type: Function,
+        default: () => undefined
+      },
+      delayedTimeout: {
+        type: Number,
+        default: () => 3000
+      },
+      label: {
+        type: String,
+        default: () => ""
+      },
+      formId: {
+        type: String,
+        default: () => "default"
+      },
+      name: {
+        type: String,
+        default: () => undefined
+      },
+      cssStyles: {
+        type: Object,
+        default: () => ({})
+      },
+      cssClasses: {
+        type: Object,
+        default: () => ({})
+      }
+    },
+    data() {
+      return {
+        _delayedChangeTimeoutId: undefined,
+        error: false,
+        value: this.initialValue,
+      }
+    },
+    methods: {
+      setValue(newValue) {
+        this.value = newValue;
+      },
+      getValue() {
+        return this.value;
+      },
+      getError() {
+        return this.error;
+      },
+      setError(error) {
+        this.error = error;
+      },
+      clearError() {
+        this.error = false;
+      },
+      async validate() {
+        if(typeof this.onValidate !== "function") {
+          throw new Error("Required «onValidate» to be a function on «BasicControl.validate»");
+        }
+        try {
+          const value = this.getValue();
+          const result = await this.onValidate(value, this);
+          if(typeof result === "undefined") {
+            this.clearError();
+          } else if(result instanceof Error) {
+            this.setError(result);
+          } else {
+            // @OK
+            this.clearError();
+          }
+          return result;
+        } catch (error) {
+          this.setError(error);
+          return error;
+        }
+      }
+    },
+    watch: {
+      value(newValue) {
+        if(this.onChange === "function") {
+          this.onChange(newValue, this);
+        }
+        if(this.onDelayedChange === "function") {
+          clearTimeout(this._delayedChangeTimeoutId);
+          this._delayedChangeTimeoutId = setTimeout(() => {
+            this.onDelayedChange(newValue, this);
+          }, this.delayedTimeout);
+        }
+      }
+    },
+    mounted() {
+      this.$el.$lswFormControlComponent = this;
+    }
+  })
+  
+  return LswFormControls;
+
+});
+Vue.directive("form-point", {
+  bind(el, binding) {
+    Inject_metadata: {
+      console.log(binding);
+      el.$lswFormMetadata = {
+        component: binding.instance,
+        element: el,
+        methods: {
+          submit: function() {
+            
+          },
+          validate: function() {
+
+          }
+        }
+      };
+    }
+  },
+  unbind(el) {
+    Clean_metadata: {
+      if(el.$lswFormMetadata) {
+        el.$lswFormMetadata.component.$off("validate-form");
+        el.$lswFormMetadata.component = null;
+      }
+    }
+  }
+});
+Vue.directive("form-control", {
+  bind(el, binding) {
+    Export_vue_instance_to_html_element: {
+      el._formComponent = binding.instance;
+    }
+  },
+  unbind(el) {
+    Clean_vue_instance_from_html_element: {
+      if(el._formComponent) {
+        el._formComponent.$off("validate-form");
+        el._formComponent = null;
+      }
+    }
+  }
+});
+Vue.directive("form-input", {
+  bind(el, binding) {
+    
+  },
+  unbind(el) {
+    
+  }
+});
+Vue.directive("form-error", {
+  bind(el, binding) {
+    // @TODO...
+  },
+  unbind(el) {
+    // @TODO...
+  }
+});
 (function(factory) {
   const mod = factory();
   if(typeof window !== 'undefined') {
@@ -16,357 +222,5 @@
     module.exports = mod;
   }
 })(function() {
-Vue.component("ControlBox", {
-  template: `<div class="ControlBox FormControl">
-  <!--Content of the form-->
-  <slot></slot>
-  <!--Buttons of the form-->
-  <div class="ControlBoxButtons" v-if="validateButton || submitButton">
-    <span v-if="validateButton">
-        <button v-on:click="validate">Validate</button>
-    </span>
-    <span v-if="submitButton">
-        <button v-on:click="submit">Submit</button>
-    </span>
-  </div>
-  <!--Error of the form-->
-  <ControlError class="unsized" v-if="error" :error="error" :control="this" style="margin-bottom: 4px;" />
-  <div class="ControlSuccess" v-else-if="showValidatedMessage && (state === 'validated')">
-    ☑️ All fields are valid.
-  </div>
-  <div class="ControlSuccess" v-else-if="showSubmittedMessage && (state === 'submitted')">
-    ☑️ Data was successfully submitted.
-  </div>
-  <div class="ControlPending" v-else-if="state === 'pending'">
-    🕒 One moment, please... 🕒
-  </div>
-  <!--End of the form-->
-</div>`,
-  mixins: [
-
-  ],
-  props: {
-    validateButton: {
-      type: String,
-      required: false
-    },
-    submitButton: {
-      type: String,
-      required: false
-    },
-    onSubmit: {
-      type: Function,
-      default: () => { }
-    },
-    onValidate: {
-      type: Function,
-      default: () => undefined,
-    },
-    formId: {
-      type: String,
-      default: () => "default"
-    },
-    showValidatedMessage: {
-      type: Boolean,
-      default: () => true
-    },
-    showSubmittedMessage: {
-      type: Boolean,
-      default: () => true
-    }
-  },
-  data() {
-    return {
-      validStates: ["pending", "validated", "erroneous", "submitted"],
-      state: "unstarted", // also: "pending", "validated", "erroneous" or "submitted"
-      error: false
-    }
-  },
-  methods: {
-    getControls() {
-      return Array.from(this.$el.querySelectorAll(".FormControl")).filter(control => {
-        return control.$lswFormControlComponent && (control.$lswFormControlComponent.formId === this.formId);
-      });
-    },
-    getValue() {
-      return this.getControls().reduce((output, control) => {
-        const value = control.$lswFormControlComponent.getValue();
-        output[control.$lswFormControlComponent.name] = value;
-        return output;
-      }, {});
-    },
-    getError() {
-      return this.error;
-    },
-    setError(error) {
-      this.error = error;
-    },
-    clearError() {
-      this.error = false;
-    },
-    getState() {
-      return this.state;
-    },
-    setState(state) {
-      if (this.validStates.indexOf(state) === -1) {
-        throw new Error("Required argument «state» to be a valid state on «ControlBox.methods.setState»");
-      }
-      this.state = state;
-    },
-    async validate() {
-      // Block repeated validation for asynchronous tasks respect:
-      if(this.getState() === "pending") {
-        return "Wait for the previous validation to finish";
-      }
-      const allControls = this.getControls();
-      this.clearError();
-      this.setState("pending");
-      try {
-        const errors = [];
-        const unknownObjects = [];
-        for (let index = 0; index < allControls.length; index++) {
-          const control = allControls[index];
-          const result = await control.$lswFormControlComponent.validate();
-          if (result instanceof Error) {
-            errors.push(result);
-          } else if (typeof result !== "undefined") {
-            // Descarta errores no concretados:
-            const isFireWatering = this.isFireWatering(result);
-            if(!isFireWatering) {
-              unknownObjects.push(result);
-            }
-          }
-        }
-        if (errors.length) {
-          const errorsSummary = errors.map((err, index) => `${index + 1}. ${err.name}: ${err.message}`).join("\n");
-          throw new Error(`Cannot validate form due to ${errors.length} error(s) arised on validation:\n${errorsSummary}`);
-        }
-        if (unknownObjects.length) {
-          const unknownzSummary = unknownObjects.map((err, index) => `${index + 1}. ${this.jsonify(err)}`).join("\n");
-          throw new Error(`Cannot validate form due to ${unknownObjects.length} unknown object(s) returned on validation:\n${unknownzSummary}`);
-        }
-        await this.selfValidate();
-        this.clearError();
-        this.setState("validated");
-      } catch (error) {
-        this.handleError(error);
-      }
-    },
-    isFireWatering(result) {
-      const isNotUndefined = typeof result === "undefined";
-      const isNotTrue = result === true;
-      const isNotFalse = result === false;
-      const isNotNull = result === null;
-      const isNotZero = result === 0;
-      return isNotUndefined || isNotTrue || isNotNull || isNotZero || isNotFalse;
-    },
-    async selfValidate() {
-      try {
-        const value = this.getValue();
-        if(this.onValidate) {
-          this.getValue();
-          await this.onValidate(value, this);
-        }
-      } catch (error) {
-        this.handleErrror(error);
-      }
-    },
-    async submit() {
-      try {
-        await this.validate();
-        const value = this.getValue();
-        await this.onSubmit(value, this);
-        this.setState("submitted");
-      } catch (error) {
-        this.handleError(error);
-      }
-    },
-    handleError(error, propagate = true) {
-      this.setError(error);
-      this.setState("erroneous");
-      if (propagate) {
-        throw error;
-      }
-    },
-    jsonify(argInput) {
-      const seen = new WeakSet();
-      return JSON.stringify(argInput, function (key, value) {
-        if (typeof value === "object") {
-          if (seen.has(value)) {
-            return "[Circular]";
-          }
-          if (value !== null) {
-            seen.add(value);
-          }
-        }
-        return value;
-      }, 2);
-    }
-  },
-  watch: {
-
-  },
-  mounted() {
-
-  }
-});
-Vue.component("ControlError", {
-  template: `<div class="ControlError">
-    <pre><span class="errorName">{{ error.name }}:</span> <span class="errorMessage">{{ error.message }}</span> <span class="errorStack">[{{ error.stack }}]</span></pre>
-    <span v-on:click="clearError" class="clearErrorButton">❎</span>
-</div>`,
-  props: {
-    error: {
-      type: Object,
-      required: true
-    },
-    control: {
-      type: Object,
-      required: false
-    }
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    clearError() {
-      return this.control && this.control.clearError();
-    }
-  },
-  watch: {
-    
-  },
-  mounted() {
-    
-  }
-});
-Vue.component("ArrayControl", {
-  template: `<div class="ArrayControl FormControl ControlType">
-  
-</div>`,
-  props: {
-    
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    
-  },
-  watch: {
-    
-  },
-  mounted() {
-    
-  }
-});
-Vue.component("BooleanControl", {
-  template: `<div class="BooleanControl FormControl ControlType">
-  
-</div>`,
-  props: {
-    
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    
-  },
-  watch: {
-    
-  },
-  mounted() {
-    
-  }
-});
-Vue.component("NumberControl", {
-  template: `<div class="NumberControl FormControl ControlType">
-  
-</div>`,
-  props: {
-    
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    
-  },
-  watch: {
-    
-  },
-  mounted() {
-    
-  }
-});
-Vue.component("StringControl", {
-  template: `<div class="StringControl FormControl ControlType">
-    <div class="FormLabel" v-if="label">{{ label }}</div>
-    <input v-if="!multiline" class="FormInput" :class="cssClasses.input || {}" :style="cssStyles.input || {}" type="text" v-model="value" :placeholder="placeholder" />
-    <textarea v-else class="FormInput" :class="cssClasses.textarea || {}" :style="cssStyles.textarea || {}" v-model="value" :placeholder="placeholder" />
-    <ControlError v-if="error" :error="error" :control="this" />
-</div>`,
-  mixins: [LswFormControls.mixins.get("BasicControl")],
-  props: {
-    placeholder: {
-      type: String,
-      default: () => {}
-    },
-    multiline: {
-      type: Boolean,
-      default: () => false,
-    },
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    
-  },
-  watch: {
-    
-  },
-  mounted() {
-    
-  }
-});
-Vue.component("DateControl", {
-  template: `<div class="DateControl FormControl ControlType">
-    <div class="FormLabel" v-if="label">{{ label }}</div>
-    <div style="display: flex; flex-direction: row;">
-        <div>
-            <input type="text" placeholder="2025/01/05" v-model="dia" />
-        </div>
-        <div>
-            <input type="text" placeholder="10:35" v-model="hora" />
-        </div>
-    </div>
-    <ControlError v-if="error" :error="error" :control="this" />
-</div>`,
-  mixins: [LswFormControls.mixins.get("BasicControl")],
-  props: {
-    
-  },
-  data() {
-    return {
-      dia: "",
-      hora: "",
-    }
-  },
-  methods: {
-    getValue() {
-      const dateString = this.dia + " " + this.hora;
-      const date = new Date(dateString);
-      return { text: dateString, date };
-    }
-  },
-  watch: {
-    
-  },
-  mounted() {
-    
-  }
-});
 });
 
