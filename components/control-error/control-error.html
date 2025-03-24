@@ -1,0 +1,4 @@
+<div class="ControlError">
+    <pre><span class="errorName">{{ error.name }}:</span> <span class="errorMessage">{{ error.message }}</span> <span class="errorStack">[{{ error.stack }}]</span></pre>
+    <span v-on:click="clearError" class="clearErrorButton">❎</span>
+</div>

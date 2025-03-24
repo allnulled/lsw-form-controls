@@ -1,0 +1,6 @@
+<div class="StringControl FormControl ControlType">
+    <div class="FormLabel" v-if="label">{{ label }}</div>
+    <input v-if="!multiline" class="FormInput" :class="cssClasses.input || {}" :style="cssStyles.input || {}" type="text" v-model="value" :placeholder="placeholder" />
+    <textarea v-else class="FormInput" :class="cssClasses.textarea || {}" :style="cssStyles.textarea || {}" v-model="value" :placeholder="placeholder" />
+    <ControlError v-if="error" :error="error" :control="this" />
+</div>

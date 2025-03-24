@@ -5,8 +5,8 @@ const { resolve } = require(__dirname + "/bundler.utils.js");
 require(resolve("dev/bundlers/core/vuebundler.js")).bundle({
   list: __dirname + "/bundlelist.components.js",
   module: true,
-  id: "Lsw_formtypes_components",
-  output: __dirname + "/lsw-formtypes.components.js",
+  id: "Lsw_form_controls_components",
+  output: __dirname + "/lsw-form-controls.components.js",
   ignore: [],
 });
 
@@ -14,8 +14,8 @@ require(resolve("dev/bundlers/core/vuebundler.js")).bundle({
 require(resolve("dev/bundlers/core/htmlbundler.js")).bundle({
   list: __dirname + "/bundlelist.js.js",
   module: true,
-  id: "Lsw_formtypes_js",
-  output: __dirname + "/lsw-formtypes.js",
+  id: "Lsw_form_controls_js",
+  output: __dirname + "/lsw-form-controls.js",
   ignore: [],
   wrap: false,
 });
@@ -24,8 +24,8 @@ require(resolve("dev/bundlers/core/htmlbundler.js")).bundle({
 require(resolve("dev/bundlers/core/htmlbundler.js")).bundle({
   list: __dirname + "/bundlelist.css.js",
   module: false,
-  id: "Lsw_formtypes_css",
-  output: __dirname + "/lsw-formtypes.css",
+  id: "Lsw_form_controls_css",
+  output: __dirname + "/lsw-form-controls.css",
   ignore: [],
   wrap: false,
 });
@@ -34,6 +34,6 @@ Set_license: {
   const package = require(__dirname + "/package.json");
   const prependFileSync = (file, text, encode = "utf8") => fs.writeFileSync(file, text + fs.readFileSync(file).toString(), "utf8");
   const licenseSource = fs.readFileSync(__dirname + "/LICENSE.md").toString();
-  prependFileSync(__dirname + "/lsw-formtypes.css", licenseSource, "utf8");
-  prependFileSync(__dirname + "/lsw-formtypes.js", licenseSource, "utf8");
+  prependFileSync(__dirname + "/lsw-form-controls.css", licenseSource, "utf8");
+  prependFileSync(__dirname + "/lsw-form-controls.js", licenseSource, "utf8");
 }

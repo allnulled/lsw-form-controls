@@ -1,3 +1,9 @@
+/*
+  @artifact:  Lite Starter Web Dependency
+  @url:       https://github.com/allnulled/lsw-form-controls.git
+  @name:      @allnulled/lsw-form-controls
+  @version:   1.0.0
+*/
 (function (factory) {
   const mod = factory();
   if (typeof window !== 'undefined') {
@@ -146,3 +152,75 @@
   return LswFormControls;
 
 });
+Vue.directive("form-point", {
+  bind(el, binding) {
+    Inject_metadata: {
+      console.log(binding);
+      el.$lswFormMetadata = {
+        component: binding.instance,
+        element: el,
+        methods: {
+          submit: function() {
+            
+          },
+          validate: function() {
+
+          }
+        }
+      };
+    }
+  },
+  unbind(el) {
+    Clean_metadata: {
+      if(el.$lswFormMetadata) {
+        el.$lswFormMetadata.component.$off("validate-form");
+        el.$lswFormMetadata.component = null;
+      }
+    }
+  }
+});
+Vue.directive("form-control", {
+  bind(el, binding) {
+    Export_vue_instance_to_html_element: {
+      el._formComponent = binding.instance;
+    }
+  },
+  unbind(el) {
+    Clean_vue_instance_from_html_element: {
+      if(el._formComponent) {
+        el._formComponent.$off("validate-form");
+        el._formComponent = null;
+      }
+    }
+  }
+});
+Vue.directive("form-input", {
+  bind(el, binding) {
+    
+  },
+  unbind(el) {
+    
+  }
+});
+Vue.directive("form-error", {
+  bind(el, binding) {
+    // @TODO...
+  },
+  unbind(el) {
+    // @TODO...
+  }
+});
+(function(factory) {
+  const mod = factory();
+  if(typeof window !== 'undefined') {
+    window["Lsw_form_controls_components"] = mod;
+  }
+  if(typeof global !== 'undefined') {
+    global["Lsw_form_controls_components"] = mod;
+  }
+  if(typeof module !== 'undefined') {
+    module.exports = mod;
+  }
+})(function() {
+});
+

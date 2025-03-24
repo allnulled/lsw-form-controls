@@ -1,0 +1,12 @@
+<div class="DateControl FormControl ControlType">
+    <div class="FormLabel" v-if="label">{{ label }}</div>
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <input type="text" placeholder="2025/01/05" v-model="dia" />
+        </div>
+        <div>
+            <input type="text" placeholder="10:35" v-model="hora" />
+        </div>
+    </div>
+    <ControlError v-if="error" :error="error" :control="this" />
+</div>
