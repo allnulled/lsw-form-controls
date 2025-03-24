@@ -1,0 +1,14 @@
+<div class="lsw_control_error">
+    <div class="box_error_container position_relative"
+        ref="errorBox"
+        v-xform.error="{}">
+        <div class="position_absolute top_0" style="right: 20px;">
+            <div class="pad_1">
+                <button v-on:click="removeError">❎</button>
+            </div>
+        </div>
+        <div class="box_error_content">
+            <div class="errorMessage"></div>
+        </div>
+    </div>
+</div>

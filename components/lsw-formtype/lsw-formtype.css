@@ -1,0 +1,16 @@
+.formtype_enunciate_block {
+    display: inline-block;
+}
+.formtype_label {
+    display: inline-block;
+}
+.formtype_info_button {
+    display: inline-block;
+}
+.formtype_enunciate_extra_info {
+    display: block;
+    border-top: 1px solid #888;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 10px;
+}

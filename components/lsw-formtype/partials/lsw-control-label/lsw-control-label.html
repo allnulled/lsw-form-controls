@@ -1,0 +1,32 @@
+<div class="lsw_control_label">
+    <div class="flex_row centered"
+        style="margin-bottom:2px;">
+        <div class="formtype_enunciate_block flex_100">
+            <div class="formtype_label">
+                <template v-if="typeof label === 'string'">
+                    {{ label }}
+                </template>
+                <template v-else-if="label !== false">
+                    Campo {{ name }}:
+                </template>
+            </div>
+        </div>
+        <div class="flex_1 pad_left_1 flex_row">
+            <template v-if="parentFormtype && (parentFormtype.isEditable === true)">
+                <button class="margin_left_1" v-on:click="() => parentFormtype.validate()" v-if="settings.column?.hasValidator || true">
+                    ✅
+                </button>
+            </template>
+            <button class="margin_left_1" :class="{activated: isShowingDescription}" v-on:click="() => toggleDescription()">ℹ️</button>
+            <template v-if="parentFormtype && (parentFormtype.isEditable === true)">
+                <button class="margin_left_1 button_to_uneditable activated" v-on:click="makeUneditable">🔓</button>
+            </template>
+            <template v-else>
+                <button class="margin_left_1 button_to_editable" v-on:click="makeEditable">🔒</button>
+            </template>
+        </div>
+    </div>
+    <div class="formtype_enunciate_extra_info" v-if="isShowingDescription">
+        ℹ️: {{ description }}
+    </div>
+</div>

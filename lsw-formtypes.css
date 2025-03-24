@@ -1,0 +1,87 @@
+/*
+  @artifact:  Lite Starter Web Dependency
+  @url:       https://github.com/allnulled/lsw-form-controls.git
+  @name:      @allnulled/lsw-form-controls
+  @version:   1.0.0
+*/
+
+.formtype_enunciate_block {
+    display: inline-block;
+}
+.formtype_label {
+    display: inline-block;
+}
+.formtype_info_button {
+    display: inline-block;
+}
+.formtype_enunciate_extra_info {
+    display: block;
+    border-top: 1px solid #888;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 10px;
+}
+.box_error_container {
+    display: none;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.box_error_container.error_is_affecting_field {
+    display: block;
+}
+
+.box_error_container > .box_error_content {
+    background-color: rgb(217, 70, 70);
+    color: #000;
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 4px;
+    border-radius: 2pt;
+    box-shadow: 0 0 4px black;
+    white-space: pre;
+    overflow: scroll;
+    height: 80px;
+    resize: vertical;
+}
+.formtype_label {
+    font-weight: bold;
+}
+.lsw_boolean_control {
+    
+}
+.lsw_date_control {
+    
+}
+.lsw_duration_control {
+    
+}
+.lsw_text_control {
+    
+}
+.lsw_long_text_control {
+    
+}
+.lsw_number_control {
+    
+}
+.lsw_options_control {
+    
+}
+.lsw_ref_list_control {}
+.lsw_ref_object_control {}
+.lsw_ref_relation_control {}
+.lsw-form-builder {
+    
+}
+
+.errorBox {
+    background-color: rgb(206, 133, 133);
+    color: black;
+    font-weight: bold;
+    border: red;
+    border-radius: 2pt;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    padding: 8px;
+}
+

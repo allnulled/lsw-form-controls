@@ -1,0 +1,14 @@
+.lsw-form-builder {
+    
+}
+
+.errorBox {
+    background-color: rgb(206, 133, 133);
+    color: black;
+    font-weight: bold;
+    border: red;
+    border-radius: 2pt;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    padding: 8px;
+}

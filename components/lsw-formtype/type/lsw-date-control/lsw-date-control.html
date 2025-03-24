@@ -1,0 +1,29 @@
+<div class="lsw_date_control lsw_formtype lsw_form_control">
+    <lsw-control-label :settings="settings"
+        :parent-formtype="this" />
+    <div v-show="isEditable">
+        <div ref="controller" v-xform.control="{
+            name: settings.name,
+            onValidate: settings.column.hasValidator || $noop,
+            onSetError: () => {
+                isEditable = true;
+            }
+        }">
+            <div class="">
+                <div class="flex_row">
+                    <div class="flex_1 pad_right_1">
+                        <button v-on:click="toggleCalendar" :class="{activated: isShowingCalendar}">📆</button>
+                    </div>
+                    <div class="flex_100">
+                        <input class="width_100" type="text" v-model="value" :placeholder="respectivePlaceholder" v-xform.input="{name:'*'}"/>
+                    </div>
+                </div>
+                <!--pre>{{ $lsw.utils.stringify(settings) }}</pre-->
+            </div>
+            <div class="pad_top_1" v-if="isShowingCalendar">
+                <lsw-calendario :modo="settings.column.isFormSubtype" :al-cambiar-valor="setValueFromCalendar" :valor-inicial="value" />
+            </div>
+            <lsw-control-error />
+        </div>
+    </div>
+</div>

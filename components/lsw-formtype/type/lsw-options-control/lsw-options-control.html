@@ -1,0 +1,25 @@
+<div class="lsw_options_control lsw_formtype lsw_form_control" keep-alive="true">
+    <lsw-control-label :settings="settings"
+        :parent-formtype="this" />
+    <div v-show="isEditable">
+        <div
+            v-show="settings.column.hasFormtypeParameters.type === 'selector'"
+            ref="controller"
+            v-xform.control="{
+                name: settings.name,
+                onValidate: settings.column.hasValidator || $noop,
+                onSetError: () => {
+                    isEditable = true;
+                }
+            }">
+            <select class="width_100" ref="inputter" v-xform.input="{name:'*'}" v-model="value">
+                <option :value="opt"
+                    v-for="opt, optIndex in settings.column.hasFormtypeParameters.available"
+                    v-bind:key="'option-' + optIndex">
+                    {{ opt }}
+                </option>
+            </select>
+            <lsw-control-error />
+        </div>
+    </div>
+</div>

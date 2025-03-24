@@ -1,0 +1,54 @@
+<div class="lsw-form-builder">
+    <div v-if="formMetadata">
+        <div v-form.form="formMetadata.form.vForm"
+            ref="currentFormElement"></div>
+        <button v-if="validate?.text"
+            v-on:click="() => $refs.currentFormElement.$lswFormMetadata.methods.validate()">{{ validate.text }}</button>
+        <button v-if="submit?.text"
+            v-on:click="() => $refs.currentFormElement.$lswFormMetadata.methods.submit()">{{ submit.text }}</button>
+        <div v-form.error="{
+            parentScope: formMetadata.form.scope,
+            parentId: formMetadata.form.id + '.error'
+        }"></div>
+        <div :class="field?.css?.classes?.group || {}"
+            v-for="field, fieldIndex in formMetadata.fields"
+            v-bind:key="'list_of_fields_index_' + fieldIndex">
+            <div class="form_field_label"
+                v-if="field.label">
+                {{ field.label }}
+            </div>
+            <div v-if="field.component">
+                <component :is="field.component.id"
+                    v-bind="field.component.props || {}"
+                    v-on="field.component.events || {}"></component>
+            </div>
+            <template v-else-if="field.type">
+                <lsw-formtype v-if="Vue.options.components.LswFormtype" :of="field" />
+                <div v-if="field.type === 'text'">
+                    <input type="text"
+                        v-bind="field.input?.props || {}"
+                        v-on="field.input?.events || {}"
+                        v-form.input="field.vForm" />
+                </div>
+                <div v-else-if="field.type === 'longtext'">
+                    <textarea v-bind="field.input?.props || {}"
+                        v-on="field.input?.events || {}"
+                        v-form.input="field.vForm"></textarea>
+                </div>
+                <div v-else-if="field.type === 'point'">
+                    <div class="control_upper" v-form.control="field.vForm">
+                        <div class="control_lower" v-form.control="field.vFormForPoint">
+                            <div v-for="dimension, dimensionIndex in field.dimensions" v-bind:key="'list_' + fieldIndex + '_dimensions_index_' + dimensionIndex">
+                                <div class="form_field_label" v-if="dimension.label">{{ dimension.label }}</div>
+                                <input type="number"
+                                    v-bind="dimension.input?.props || {}"
+                                    v-on="dimension.input?.events || {}"
+                                    v-form.input="dimension.vForm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>

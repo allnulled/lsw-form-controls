@@ -1,0 +1,8 @@
+<div class="lsw-formtype">
+    <component
+        v-if="definition.name in Vue.options.components"
+        :is="definition.name"
+        v-on="definition.events"
+        v-bind="definition.props"></component>
+    <div v-else>No se encontró tipo {{ definition.name || "-" }}</div>
+</div>

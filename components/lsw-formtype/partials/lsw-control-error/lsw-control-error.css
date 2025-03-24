@@ -1,0 +1,22 @@
+.box_error_container {
+    display: none;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.box_error_container.error_is_affecting_field {
+    display: block;
+}
+
+.box_error_container > .box_error_content {
+    background-color: rgb(217, 70, 70);
+    color: #000;
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 4px;
+    border-radius: 2pt;
+    box-shadow: 0 0 4px black;
+    white-space: pre;
+    overflow: scroll;
+    height: 80px;
+    resize: vertical;
+}

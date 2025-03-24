@@ -1,0 +1,45 @@
+<div class="lsw_ref_object_control lsw_formtype lsw_form_control">
+    <lsw-control-label :settings="settings"
+        :parent-formtype="this" />
+    <div v-show="isEditable">
+        <div ref="controller"
+            v-xform.control="{
+                name: settings.name,
+                onValidate: settings.column.hasValidator || $noop,
+                onSetError: () => {
+                    isEditable = true;
+                }
+            }">
+            <div class="flex_row">
+                <div class="flex_1 pad_right_1">
+                    <button :class="{activated: isShownSelector}"
+                        v-on:click="toggleSelector">🔎</button>
+                </div>
+                <input class="flex_100"
+                    type="text"
+                    v-model="value"
+                    v-xform.input="{name: '*',onValidate: settings.input?.onValidate || $noop}"
+                    :disabled="settings.column.refersTo.constraint"
+                    ref="textInput" />
+                <div class="flex_1 pad_left_1" v-if="$window.process.env.NODE_ENV === 'test' && false">
+                    <button :class="{activated: isShownInfo}"
+                        v-on:click="toggleInfo">ℹ️</button>
+                </div>
+            </div>
+            <div class="pad_top_1" v-if="isShownInfo">
+                <div class="" style="white-space: pre; font-size:12px; border: 1px solid white; background-color: white; color: black;">{{ $lsw.utils.stringify(settings) }}</div>
+            </div>
+            <div class=""
+                v-if="isShownSelector">
+                <lsw-table
+                    :initial-input="rows"
+                    :initial-settings="{title: `Un ítem de «${settings.column.refersTo.table}.${settings.column.refersTo.property}»:`, itemsPerPage: 50 }"
+                    selectable="one"
+                    :on-choose-row="v => value = $window.console.log('valueee', v) || v"
+                    :initial-choosen-value="value"
+                    choosable-id="tiene_nombre"></lsw-table>
+            </div>
+            <lsw-control-error />
+        </div>
+    </div>
+</div>
